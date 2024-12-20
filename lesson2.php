@@ -88,34 +88,57 @@
   echo "問５";
   echo "<br>";
 
-  if( !empty($_POST['age']) || $_POST['age'] == 0){
-    $age = intval($_POST['age']);
-  } else {
-    $age = "";
+  $error = 0;
+
+  if(!empty($_POST['count'])){
+    $count = 1;
   }
-  
+
+  if (empty($count)){
+    $age = "";
+  } else if($count ==1){
+    if (!empty($_POST['age'])){
+      if(intval($_POST['age']) < 0){
+        $age = intval($_POST['age']);
+        $error = 1;
+      } else if(intval($_POST['age']) == 0){
+        $age = $_POST['age'];
+        $error = 2;
+      } else{
+        $age = intval($_POST['age']);
+      }
+    } else {
+      if(!($_POST['age'] === "0")){
+        $age = "";
+      }else {
+        $age = 0;
+      }
+    }
+  }
 
   ?>
   <form method="post" action="lesson2.php">
-    <input type="text" name="age" value="<?php echo $age ?>" size="30"><br>
-    <input type="submit" value="送信">
+    <input type="text" name="age" value="<?php echo $age ?>" ><br>
+    <input type="submit" name="count" value="送信">
   </form>
 <?php
 
   echo "<br>";
-
-  if(0 <= $age && $age <= 5){
-    echo "バス料金は、無料です";
-  } else if(6 <= $age && $age <= 12){
-    echo "バス料金は、２００円となります。";
-  } else if(13 <= $age && $age <= 70){
-    echo "バス料金は、５００円となります。";
-  } else if(70 <= $age){
-    echo "バス料金は、無料です";
+  if($error < 2){
+    if(0 <= $age && $age <= 5){
+      echo "バス料金は、無料です";
+    } else if(6 <= $age && $age <= 12){
+      echo "バス料金は、２００円となります。";
+    } else if(13 <= $age && $age <= 70){
+      echo "バス料金は、５００円となります。";
+    } else if(70 <= $age){
+      echo "バス料金は、無料です";
+    }
+  }
+  
+  if ($error > 0){
+    echo "年齢は正の整数を半角で入力してください";
   }
 
-
-
-  echo "\n";
 
 ?>
